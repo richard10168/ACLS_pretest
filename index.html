@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ACLS 2025 前測 Pretest</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&display=swap');
+  :root {
+    --red:#C0392B;--dark-red:#922B21;--light-red:#FADBD8;
+    --bg:#F5F6FA;--dark:#1A1A2E;--gray:#7F8C8D;
+    --light-gray:#ECF0F1;--green:#1E8449;--light-green:#D5F5E3;
+    --orange:#E67E22;--light-orange:#FDEBD0;
+    --shadow:0 4px 20px rgba(0,0,0,0.12);--radius:14px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Noto Sans TC',sans-serif;background:var(--bg);color:var(--dark);min-height:100vh;}
+
+  .header{background:linear-gradient(135deg,var(--dark-red) 0%,var(--red) 60%,#E74C3C 100%);color:white;padding:24px 20px 20px;text-align:center;position:relative;overflow:hidden;}
+  .header::before{content:'♥';position:absolute;font-size:200px;opacity:0.05;top:-40px;right:-30px;line-height:1;}
+  .header-badge{display:inline-block;background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.3);border-radius:20px;padding:4px 14px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+  .header h1{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:3px;line-height:1;margin-bottom:4px;}
+  .header-sub{font-size:13px;opacity:0.85;font-weight:500;}
+  .header-info{display:flex;justify-content:center;gap:12px;margin-top:14px;flex-wrap:wrap;}
+  .header-info span{font-size:12px;opacity:0.9;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:10px;}
+
+  .screen{display:none;}.screen.active{display:block;}
+  .container{padding:20px 16px;max-width:600px;margin:0 auto;}
+  .card{background:white;border-radius:var(--radius);padding:24px 20px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .card h2{font-size:17px;font-weight:700;color:var(--dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .card h2 .icon{width:32px;height:32px;background:var(--light-red);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+  .rules-list{list-style:none;}
+  .rules-list li{padding:8px 0;border-bottom:1px solid var(--light-gray);font-size:14px;color:#444;display:flex;gap:10px;align-items:flex-start;}
+  .rules-list li:last-child{border-bottom:none;}
+  .rules-list li .dot{width:20px;height:20px;background:var(--red);color:white;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;}
+  label{display:block;font-size:13px;font-weight:700;color:var(--gray);margin-bottom:6px;letter-spacing:0.5px;}
+  input[type=text]{width:100%;padding:14px 16px;border:2px solid var(--light-gray);border-radius:10px;font-size:16px;font-family:inherit;outline:none;transition:border-color 0.2s;}
+  input:focus{border-color:var(--red);}
+  .btn{width:100%;padding:15px;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;transition:transform 0.1s;}
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{background:linear-gradient(135deg,var(--dark-red),var(--red));color:white;box-shadow:0 4px 15px rgba(192,57,43,0.35);margin-top:14px;}
+  .btn-dark{background:var(--dark);color:white;margin-top:10px;}
+
+  .progress-bar-wrap{background:white;padding:14px 16px 10px;border-bottom:1px solid var(--light-gray);position:sticky;top:0;z-index:10;}
+  .progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .progress-label{font-size:12px;font-weight:700;color:var(--gray);letter-spacing:0.5px;}
+  .progress-count{font-size:13px;font-weight:700;color:var(--red);}
+  .progress-track{height:6px;background:var(--light-gray);border-radius:3px;overflow:hidden;}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--dark-red),var(--red));border-radius:3px;transition:width 0.4s ease;}
+
+  .question-card{background:white;margin:16px 16px 0;border-radius:var(--radius);padding:20px;box-shadow:var(--shadow);}
+  .question-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .q-number{font-size:11px;font-weight:700;color:var(--red);letter-spacing:1px;text-transform:uppercase;}
+  .q-category{font-size:11px;background:var(--light-red);color:var(--dark-red);padding:3px 8px;border-radius:6px;font-weight:600;}
+  .question-text{font-size:16px;font-weight:600;line-height:1.6;color:var(--dark);margin-bottom:6px;}
+  .question-note{font-size:12px;color:var(--orange);font-weight:500;}
+
+  .options-list{display:flex;flex-direction:column;gap:10px;padding:12px 16px 16px;}
+  .option-btn{width:100%;background:white;border:2px solid var(--light-gray);border-radius:12px;padding:14px 16px;text-align:left;font-size:14px;font-family:inherit;cursor:pointer;transition:all 0.2s;display:flex;align-items:flex-start;gap:12px;line-height:1.5;color:var(--dark);}
+  .option-btn.correct{border-color:var(--green);background:var(--light-green);}
+  .option-btn.wrong{border-color:var(--red);background:var(--light-red);}
+  .option-btn.reveal-correct{border-color:var(--green);background:var(--light-green);}
+  .option-btn:disabled{cursor:default;}
+  .opt-letter{width:26px;height:26px;border-radius:50%;background:var(--light-gray);color:var(--gray);font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;}
+  .option-btn.correct .opt-letter{background:var(--green);color:white;}
+  .option-btn.wrong .opt-letter{background:var(--red);color:white;}
+  .option-btn.reveal-correct .opt-letter{background:var(--green);color:white;}
+
+  .explanation-box{margin:0 16px 16px;border-radius:10px;padding:14px 16px;border-left:4px solid var(--gray);font-size:13px;line-height:1.6;color:#444;display:none;}
+  .explanation-box.show{display:block;}
+  .explanation-box.correct-exp{background:var(--light-green);border-color:var(--green);}
+  .explanation-box.wrong-exp{background:var(--light-orange);border-color:var(--orange);}
+  .exp-title{font-weight:700;font-size:13px;margin-bottom:6px;}
+  .next-wrap{padding:12px 16px 24px;}
+  .btn-next{width:100%;padding:15px;background:var(--dark);color:white;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;display:none;}
+  .btn-next.show{display:block;}
+
+  .score-card{background:white;border-radius:var(--radius);padding:30px 24px;box-shadow:var(--shadow);text-align:center;margin-bottom:16px;}
+  .score-emoji{font-size:56px;margin-bottom:8px;}
+  .score-name{font-size:14px;color:var(--gray);margin-bottom:4px;}
+  .score-big{font-family:'Bebas Neue',sans-serif;font-size:80px;color:var(--red);line-height:1;margin-bottom:4px;}
+  .score-label{font-size:13px;color:var(--gray);margin-bottom:16px;}
+  .score-bar-wrap{height:12px;background:var(--light-gray);border-radius:6px;overflow:hidden;margin-bottom:16px;}
+  .score-bar-fill{height:100%;border-radius:6px;transition:width 1s ease;}
+  .score-msg{font-size:14px;font-weight:600;color:var(--dark);padding:12px 16px;border-radius:10px;background:var(--light-gray);}
+  .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+  .stat-box{background:white;border-radius:12px;padding:16px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+  .stat-box .num{font-family:'Bebas Neue',sans-serif;font-size:38px;line-height:1;margin-bottom:4px;}
+  .stat-box .lbl{font-size:12px;color:var(--gray);font-weight:600;}
+  .stat-box.green .num{color:var(--green);}
+  .stat-box.red .num{color:var(--red);}
+
+  .review-section{background:white;border-radius:var(--radius);padding:20px 16px;box-shadow:var(--shadow);margin-bottom:16px;}
+  .review-section h3{font-size:15px;font-weight:700;margin-bottom:14px;}
+  .review-item{padding:12px 0;border-bottom:1px solid var(--light-gray);font-size:13px;}
+  .review-item:last-child{border-bottom:none;}
+  .review-q{font-weight:600;margin-bottom:4px;line-height:1.5;}
+  .review-a{font-size:12px;}
+  .review-a.correct{color:var(--green);}
+  .review-a.wrong{color:var(--red);}
+  .review-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;font-weight:700;margin-right:6px;}
+  .badge-correct{background:var(--light-green);color:var(--green);}
+  .badge-wrong{background:var(--light-red);color:var(--red);}
+
+  /* Submitting overlay */
+  .submit-overlay{position:fixed;inset:0;background:rgba(26,26,46,0.7);display:flex;align-items:center;justify-content:center;z-index:999;display:none;}
+  .submit-overlay.show{display:flex;}
+  .submit-box{background:white;border-radius:var(--radius);padding:32px 28px;text-align:center;max-width:280px;width:90%;}
+  .submit-spinner{font-size:40px;animation:spin 1.2s linear infinite;margin-bottom:12px;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .submit-box p{font-size:14px;font-weight:600;color:var(--dark);}
+  .submit-box small{font-size:12px;color:var(--gray);margin-top:6px;display:block;}
+
+  .saved-notice{border-radius:10px;padding:12px 16px;font-size:13px;font-weight:600;text-align:center;margin-bottom:12px;}
+  .saved-notice.ok{background:var(--light-green);color:var(--green);border:1px solid var(--green);}
+  .saved-notice.err{background:var(--light-orange);color:var(--orange);border:1px solid var(--orange);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-badge">AHA 2025 ECC Guidelines</div>
+  <h1>ACLS PRETEST</h1>
+  <div class="header-sub">2025 美國心臟協會 高級心臟救命術 前測</div>
+  <div class="header-info">
+    <span>📋 20 題</span><span>⭐ 滿分 100 分</span><span>🏥 護理師 / 醫療人員</span>
+  </div>
+</div>
+
+<!-- START -->
+<div id="startScreen" class="screen active">
+  <div class="container">
+    <div class="card">
+      <h2><span class="icon">📌</span>考試說明</h2>
+      <ul class="rules-list">
+        <li><span class="dot">1</span>本測驗共 20 題，滿分 100 分，每題 5 分。</li>
+        <li><span class="dot">2</span>每題有 4 個選項，請選出「唯一錯誤」的選項。</li>
+        <li><span class="dot">3</span>內容依據 2025 AHA ACLS 最新指引。</li>
+        <li><span class="dot">4</span>選擇後立即顯示對錯及解析說明。</li>
+        <li><span class="dot">5</span>完成後成績自動上傳，導師可查看所有學員紀錄。</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h2><span class="icon">👤</span>填寫資料</h2>
+      <label>姓名 / 學員編號</label>
+      <input type="text" id="nameInput" placeholder="請輸入您的姓名..." autocomplete="off"/>
+      <button class="btn btn-primary" onclick="startQuiz()">▶ 開始考試</button>
+    </div>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div id="quizScreen" class="screen">
+  <div style="max-width:600px;margin:0 auto;">
+    <div class="progress-bar-wrap">
+      <div class="progress-top">
+        <span class="progress-label">PROGRESS</span>
+        <span class="progress-count" id="progressCount">1 / 20</span>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:5%"></div></div>
+    </div>
+    <div class="question-card">
+      <div class="question-meta">
+        <span class="q-number" id="qNumber">題目 01</span>
+        <span class="q-category" id="qCategory"></span>
+      </div>
+      <div class="question-text" id="questionText"></div>
+      <div class="question-note">⚠️ 請選出「唯一錯誤」的選項</div>
+    </div>
+    <div class="options-list" id="optionsList"></div>
+    <div class="explanation-box" id="explanationBox">
+      <div class="exp-title" id="expTitle"></div>
+      <div id="expText"></div>
+    </div>
+    <div class="next-wrap">
+      <button class="btn-next" id="btnNext" onclick="nextQuestion()">下一題 →</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div id="resultScreen" class="screen">
+  <div class="container">
+    <div class="saved-notice" id="savedNotice">⏳ 正在上傳成績...</div>
+    <div class="score-card">
+      <div class="score-emoji" id="scoreEmoji">🎉</div>
+      <div class="score-name" id="scoreName"></div>
+      <div class="score-big" id="scoreBig">0</div>
+      <div class="score-label">分 / 滿分 100 分</div>
+      <div class="score-bar-wrap"><div class="score-bar-fill" id="scoreBarFill" style="width:0%"></div></div>
+      <div class="score-msg" id="scoreMsg"></div>
+    </div>
+    <div class="stats-grid">
+      <div class="stat-box green"><div class="num" id="statCorrect">0</div><div class="lbl">✅ 答對題數</div></div>
+      <div class="stat-box red"><div class="num" id="statWrong">0</div><div class="lbl">❌ 答錯題數</div></div>
+    </div>
+    <div class="review-section">
+      <h3>📖 題目回顧</h3>
+      <div id="reviewList"></div>
+    </div>
+    <button class="btn btn-primary" onclick="show('startScreen')">🔄 重新考試</button>
+  </div>
+</div>
+
+<!-- Uploading overlay -->
+<div class="submit-overlay" id="submitOverlay">
+  <div class="submit-box">
+    <div class="submit-spinner">⏳</div>
+    <p>正在上傳成績...</p>
+    <small>請稍候，勿關閉頁面</small>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════
+//  ★★★ 請將下方 YOUR_SCRIPT_URL 換成你的
+//      Google Apps Script 網址 ★★★
+// ══════════════════════════════════════════════
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyt-ChdDNiqjLFgbP3fuxAiIUYGhuQrZitrxkzIvnjGFULoXk7z4XGNFS_s180g02LX/exec';
+
+const Q = [
+  {c:"心跳停止",t:"根據 2025 AHA ACLS 指引，關於成人高品質 CPR 的執行標準，下列何者「錯誤」？",o:["胸部按壓深度至少 2 英吋（5 cm）","按壓速率維持 100–120 次 / 分鐘","每次按壓後應讓胸壁完全回彈","若已置入高級呼吸道，應以 15:2 的按壓通氣比進行"],a:3,e:"置入高級呼吸道後，應「連續胸部按壓」並每 6 秒給予 1 次呼吸（10次/分鐘），不再中斷按壓。30:2 只在沒有高級呼吸道時使用。"},
+  {c:"心跳停止藥物",t:"成人心跳停止（VF/pVT）時，關於 Epinephrine 的使用，下列何者「錯誤」？",o:["標準劑量為 1 mg IV/IO","每 3–5 分鐘可重複給予","對 VF/pVT 應於第一次電擊前盡早給予","給藥途徑為 IV 或 IO"],a:2,e:"VF/pVT 的優先順序是：CPR → 電擊 → CPR 2 min，Epinephrine 從第二次電擊後才開始給予。Asystole/PEA 才是盡快（ASAP）給予 Epinephrine。"},
+  {c:"除顫電擊",t:"關於 2025 ACLS 電擊去顫（Defibrillation）建議，下列何者「錯誤」？",o:["雙相波（Biphasic）初始電擊能量建議為 120–200 J","若不知設備建議能量，應使用最大能量","單相波（Monophasic）建議使用 360 J","第二次及後續電擊應降低能量以減少傷害"],a:3,e:"第二次及後續電擊能量應與第一次「相當或更高」，不應降低，以確保足夠能量終止 VF。"},
+  {c:"心跳停止藥物",t:"成人 VF/pVT 電擊無效時，關於抗心律不整藥物，下列何者「錯誤」？",o:["Amiodarone 第一劑為 300 mg IV/IO bolus","Amiodarone 第二劑為 150 mg","Lidocaine 第一劑為 1–1.5 mg/kg","Amiodarone 與 Lidocaine 建議合併同時使用以增強療效"],a:3,e:"目前證據不足以區分兩者療效差異，亦無數據支持合併使用。臨床上選擇其中「一種」即可。"},
+  {c:"可逆原因 5H5T",t:"ACLS 心跳停止算則中，需排除的「可逆原因」（5H5T），下列何者「不在」此清單中？",o:["Hypovolemia（低血容量）","Tension pneumothorax（張力性氣胸）","Hyperglycemia（高血糖）","Thrombosis, pulmonary（肺栓塞）"],a:2,e:"高血糖（Hyperglycemia）並非 5H5T 可逆原因。正確 5H：Hypovolemia、Hypoxia、Hydrogen ion、Hypo/Hyperkalemia、Hypothermia；5T：Tension pneumothorax、Tamponade、Toxins、Thrombosis×2。"},
+  {c:"心跳停止後照護",t:"關於 ROSC 後的目標體溫管理（TTM），下列何者「錯誤」？",o:["對無法遵從指令的成人，建議維持體溫在 32°C–37.5°C","應積極預防高體溫（發燒）","低溫治療優先選擇 32°C 以達最佳神經學預後","體溫控制應持續至 ROSC 後 72 小時以上再進行預後評估"],a:2,e:"目前最佳目標溫度尚無定論，接受範圍 32–37.5°C。「避免高體溫（>37.5°C）」是第一優先，不一定要降至 32°C。"},
+  {c:"緩脈/心搏過慢",t:"成人有症狀心搏過緩（Bradycardia）的處置，關於 Atropine，下列何者「錯誤」？",o:["Atropine 第一劑建議 1 mg IV bolus","Atropine 最大總劑量為 3 mg","可每 3–5 分鐘重複使用","Atropine 對高度房室傳導阻滯（High-degree AV Block）通常療效卓著，優於電刺激"],a:3,e:"Atropine 對 High-degree AV Block 效果有限甚至無效。若無效，應考慮 Transcutaneous pacing 或 Transvenous pacing，以及 Dopamine 或 Epinephrine 輸注。"},
+  {c:"心搏過速",t:"成人不穩定型心搏過速（Unstable Tachycardia）的立即處置，下列何者「錯誤」？",o:["應立即進行電擊整律（Synchronized Cardioversion）","應在可行情況下給予鎮靜藥物（Sedate whenever feasible）","若為規則窄QRS心搏過速，可先嘗試 Adenosine 代替電擊","Polymorphic VT 應使用同步電擊整律（Synchronized Cardioversion）"],a:3,e:"Polymorphic VT 應以「非同步高能量電擊（Defibrillation）」治療，而非同步電擊整律，因同步電擊在不規則節律下難以觸發且風險較高。"},
+  {c:"電擊整律",t:"根據 2025 ACLS 電擊整律算則，關於同步電擊能量，下列何者「錯誤」？",o:["心房顫動（AF）建議使用 200 J","心房撲動（Atrial Flutter）建議使用 200 J","規則窄 QRS 心搏過速使用 100 J","單形性心室頻脈（Monomorphic VT）使用 200 J"],a:3,e:"Monomorphic VT 建議使用 100 J，不是 200 J。AF 與 Atrial Flutter 皆建議 200 J 是 2025 年的更新重點。"},
+  {c:"ETCO₂ 監測",t:"關於 ETCO₂（呼氣末二氧化碳）在 CPR 中的應用，下列何者「錯誤」？",o:["ETCO₂ 偏低代表 CPR 品質可能不佳","ETCO₂ 突然升高通常表示 ROSC 發生","2025 指引建議單獨以低 ETCO₂ 值決定終止急救","置入高級呼吸道後應以波形 Capnography 確認及監測管路位置"],a:2,e:"ETCO₂ 不應「單獨（in isolation）」作為終止急救的依據，必須綜合其他臨床資訊判斷。"},
+  {c:"心跳停止後照護",t:"ROSC 後的血壓與血氧管理目標，下列何者「錯誤」？",o:["目標平均動脈壓（MAP）≥ 65 mmHg","SpO₂ 目標維持在 94%–99%","PaCO₂ 目標為 35–45 mmHg","應給予 100% 高流量氧氣並維持整個 ICU 住院期間以確保腦供氧"],a:3,e:"ROSC 後應避免高氧血症（Hyperoxia）。應調整 FiO₂ 至維持 SpO₂ 94–99% 的最低量，過高的氧氣供給可能加重腦損傷。"},
+  {c:"小兒急救",t:"關於 2025 小兒心跳停止（Pediatric Cardiac Arrest）的處置，下列何者「錯誤」？",o:["Epinephrine 劑量為 0.01 mg/kg IV/IO（最大 1 mg）","Amiodarone 劑量為 5 mg/kg bolus（最大 300 mg），可重複至 3 次","電擊能量：第一次 2 J/kg，第二次 4 J/kg，後續 ≥4 J/kg","2 名施救者（青春期前）應使用 30:2 的按壓通氣比"],a:3,e:"青春期前兒童由「2 名施救者」執行時，應採用「15:2」。30:2 只適用於「1 名施救者（任何年齡）」或「青春期後的 2 名施救者」。"},
+  {c:"呼吸道管理",t:"關於 ACLS 進階呼吸道管理，下列何者「錯誤」？",o:["氣管內管（ET tube）或聲門上呼吸道（Supraglottic airway）均可接受","置管後應使用連續波形 Capnography 確認及監測位置","置入高級呼吸道後，按壓速率降低為 60–80 次/分以搭配給氣","置入高級呼吸道後，應每 6 秒給予 1 次呼吸（約 10 次/分鐘）"],a:2,e:"置入高級呼吸道後，應「持續不間斷按壓」維持 100–120 次/分鐘，通氣改為每 6 秒 1 次，兩者不再同步，不需降低按壓速率。"},
+  {c:"靜脈通路",t:"關於心跳停止期間的給藥路徑，下列何者「錯誤」？",o:["IV（靜脈）或 IO（骨髓內）為優先給藥路徑","IO 路徑與 IV 路徑效果相當，可用於所有急救藥物","氣管內（ET）給藥為優先且首選的給藥途徑","若無法建立 IV/IO，部分藥物可氣管內給予，但劑量需調整"],a:2,e:"ACLS 優先建立的給藥路徑是 IV 或 IO。氣管內給藥吸收不穩定，僅在無法建立 IV/IO 時才考慮，且需增加劑量（約 2–2.5 倍）。"},
+  {c:"緩脈/心搏過慢",t:"成人有症狀心搏過緩若 Atropine 無效，下列處置何者「錯誤」？",o:["可考慮 Transcutaneous Pacing（體外起搏）","可使用 Dopamine IV infusion 5–20 mcg/kg/min","可使用 Epinephrine 2–10 mcg/min IV infusion","應立即給予 Amiodarone 150 mg 靜脈輸注以穩定節律"],a:3,e:"Amiodarone 是用於「心搏過速（tachyarrhythmia）」的藥物，對心搏過緩無效且可能加重。Atropine 無效時應使用 Transcutaneous pacing、Dopamine 或 Epinephrine 輸注。"},
+  {c:"特殊狀況 DSD",t:"關於「Double Sequential Defibrillation（DSD，雙序列去顫）」，2025 ACLS 的立場，下列何者「錯誤」？",o:["DSD 是指使用兩台去顫器對同一患者快速連續電擊","2025 ACLS 建議將 DSD 作為難治型 VF 的第一線治療","目前證據尚不足以確立 DSD 的療效","指引建議在嚴謹臨床試驗下進行 DSD 的進一步研究"],a:1,e:"2025 ACLS 明確指出 DSD 及 Vector Change（VC）的療效「尚未確立」，不建議常規使用，應在嚴謹臨床試驗框架下研究。"},
+  {c:"心跳停止後照護",t:"關於 ROSC 後的早期診斷評估，下列何者「錯誤」？",o:["應盡快執行 12 導程心電圖（12-lead ECG）","可考慮使用超音波評估心肌功能","可考慮執行頭部、胸部、腹部 CT 查明心跳停止原因","不建議進行冠狀動脈攝影，因等待時間會影響急救"],a:3,e:"對持續 ST 段上升、心因性休克或難治型心律不整的 ROSC 患者，應「考慮緊急冠狀動脈攝影及介入治療」，這是心跳停止後照護的重要環節。"},
+  {c:"終止急救 TOR",t:"關於院外心跳停止（OHCA）的「終止急救原則（TOR）」，下列何者「錯誤」？",o:["BLS TOR：未旁觀者目睹、無旁觀者 CPR、無電擊給予、轉送前無 ROSC","ALS TOR 條件全部符合時，可考慮終止急救","低 ETCO₂ 值可單獨作為終止急救的充分依據","若任何一項 TOR 條件不符合，應繼續急救並考慮轉送"],a:2,e:"ETCO₂ 不應「單獨（in isolation）」決定終止急救。TOR 決定需綜合臨床資訊，使用 BLS TOR 或 ALS TOR 標準化準則判斷。"},
+  {c:"頭抬高 CPR",t:"關於「Head-Up CPR（頭部抬高 CPR）」，2025 ACLS 的建議，下列何者「錯誤」？",o:["理論上頭抬高 CPR 可改善腦部灌流並降低顱內壓","目前臨床研究尚未提供足夠證據確認其效益","2025 ACLS 建議應常規於院前急救中採用頭抬高 CPR","在嚴謹臨床試驗以外，不建議常規使用頭抬高 CPR"],a:2,e:"2025 ACLS 明確指出頭抬高 CPR 在嚴謹臨床試驗以外應「避免（discouraged）」常規使用，目前尚不支持作為標準急救做法。"},
+  {c:"生存之鏈",t:"2025 AHA 心跳停止「生存之鏈（Chain of Survival）」的最新概念，下列何者「錯誤」？",o:["2025 生存之鏈整合成人院外、院內及小兒心跳停止，採用單一共通版本","生存之鏈包含：辨識與緊急啟動、高品質 CPR、去顫、高級救命術、心跳停止後照護、復原與存活","「復原與存活（Recovery and Survivorship）」是 2025 版新增強調的環節","生存之鏈已正式新增「Naloxone 取得」作為第七個獨立環節"],a:3,e:"Naloxone 及 AED 政策推廣屬於「照護體系（Systems of Care）」建議，並非生存之鏈的獨立新環節。生存之鏈仍維持六個主要環節。"}
+];
+
+const L=['A','B','C','D'];
+let cur=0, ans=[], uname='', ok=0;
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function startQuiz(){
+  uname=document.getElementById('nameInput').value.trim()||'匿名學員';
+  cur=0; ans=[]; ok=0;
+  show('quizScreen');
+  loadQ();
+}
+
+function loadQ(){
+  const q=Q[cur], tot=Q.length;
+  document.getElementById('progressCount').textContent=`${cur+1} / ${tot}`;
+  document.getElementById('progressFill').style.width=`${((cur+1)/tot)*100}%`;
+  document.getElementById('qNumber').textContent=`題目 ${String(cur+1).padStart(2,'0')}`;
+  document.getElementById('qCategory').textContent=q.c;
+  document.getElementById('questionText').textContent=q.t;
+  const ol=document.getElementById('optionsList');
+  ol.innerHTML='';
+  q.o.forEach((opt,i)=>{
+    const b=document.createElement('button');
+    b.className='option-btn';
+    b.innerHTML=`<span class="opt-letter">${L[i]}</span><span>${opt}</span>`;
+    b.onclick=()=>pick(i);
+    ol.appendChild(b);
+  });
+  document.getElementById('explanationBox').className='explanation-box';
+  document.getElementById('btnNext').className='btn-next';
+}
+
+function pick(idx){
+  const q=Q[cur];
+  document.querySelectorAll('.option-btn').forEach(b=>b.disabled=true);
+  const correct=(idx===q.a);
+  ans.push({qi:cur,sel:idx,ans:q.a,ok:correct});
+  if(correct) ok++;
+  document.querySelectorAll('.option-btn').forEach((b,i)=>{
+    if(i===idx&&correct) b.classList.add('correct');
+    else if(i===idx) b.classList.add('wrong');
+    if(!correct&&i===q.a) b.classList.add('reveal-correct');
+  });
+  const eb=document.getElementById('explanationBox');
+  eb.className='explanation-box show '+(correct?'correct-exp':'wrong-exp');
+  document.getElementById('expTitle').innerHTML=correct?'✅ 答對！':`❌ 答錯 — 正確答案是選項 ${L[q.a]}`;
+  document.getElementById('expText').textContent=q.e;
+  const nb=document.getElementById('btnNext');
+  nb.textContent=cur<Q.length-1?'下一題 →':'查看成績 📊';
+  nb.className='btn-next show';
+}
+
+function nextQuestion(){
+  cur++;
+  if(cur>=Q.length) showResult();
+  else{ loadQ(); window.scrollTo(0,0); }
+}
+
+function showResult(){
+  const tot=Q.length, score=Math.round((ok/tot)*100), wrong=tot-ok;
+  let emoji,msg,bc;
+  if(score>=90){emoji='🏆';msg='優秀！您對 2025 ACLS 指引掌握非常紮實，準備好了！';bc='linear-gradient(90deg,#1E8449,#27AE60)';}
+  else if(score>=75){emoji='👍';msg='良好！基礎扎實，建議再複習幾個重要算則細節。';bc='linear-gradient(90deg,#1A5276,#2980B9)';}
+  else if(score>=60){emoji='📚';msg='及格！有些觀念需要加強，建議重讀 2025 ACLS 更新重點。';bc='linear-gradient(90deg,#784212,#E67E22)';}
+  else{emoji='💪';msg='需要加油！建議仔細研讀 2025 ACLS 指引，多加練習。';bc='linear-gradient(90deg,#922B21,#C0392B)';}
+  document.getElementById('scoreEmoji').textContent=emoji;
+  document.getElementById('scoreName').textContent=uname+' 的成績';
+  document.getElementById('scoreBig').textContent=score;
+  document.getElementById('scoreBarFill').style.background=bc;
+  document.getElementById('scoreMsg').textContent=msg;
+  document.getElementById('statCorrect').textContent=ok;
+  document.getElementById('statWrong').textContent=wrong;
+  const rl=document.getElementById('reviewList');
+  rl.innerHTML='';
+  ans.forEach((a,i)=>{
+    const q=Q[a.qi];
+    const d=document.createElement('div');
+    d.className='review-item';
+    d.innerHTML=`<div class="review-q">Q${i+1}. ${q.t.substring(0,55)}...</div>
+    <div class="review-a ${a.ok?'correct':'wrong'}">
+      <span class="review-badge ${a.ok?'badge-correct':'badge-wrong'}">${a.ok?'✅ 答對':'❌ 答錯'}</span>
+      選 ${L[a.sel]}${!a.ok?' → 正確: '+L[a.ans]:''}
+    </div>`;
+    rl.appendChild(d);
+  });
+  show('resultScreen');
+  setTimeout(()=>{ document.getElementById('scoreBarFill').style.width=score+'%'; },100);
+  submitScore(uname, score, ok, wrong, tot);
+}
+
+async function submitScore(name, score, correct, wrong, total){
+  const notice = document.getElementById('savedNotice');
+  notice.className='saved-notice';
+  notice.textContent='⏳ 正在上傳成績...';
+
+  // Build wrong question list
+  const wrongList = ans.filter(a=>!a.ok).map(a=>`Q${a.qi+1}(${Q[a.qi].c})`).join(', ');
+
+  const payload = {
+    name, score, correct, wrong, total,
+    wrongQuestions: wrongList || '無',
+    time: new Date().toLocaleString('zh-TW')
+  };
+
+  try {
+    await fetch(GAS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    notice.className='saved-notice ok';
+    notice.textContent='✅ 成績已成功上傳！導師可在 Google 試算表查看。';
+  } catch(e) {
+    notice.className='saved-notice err';
+    notice.textContent='⚠️ 上傳失敗，請截圖成績頁面傳給導師。';
+  }
+}
+</script>
+</body>
+</html>
